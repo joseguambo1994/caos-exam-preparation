@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
- function Week1Component() {
+ function Question1() {
    const [frequencyHz, setFrequencyHz] = useState(100000000);
    const [timeSeconds, setTimeSeconds] = useState(0);
    const [ numberOfCyclesPerInstruction, setNumberOfCyclesPerInstruction ] = useState(0);
@@ -18,7 +18,11 @@ import React, { useState } from 'react';
    return (
      <div>
        <div>
-         <p>You clicked {frequencyHz} times</p>
+         <div>
+           <label>
+             Question 1
+           </label>
+         </div>
          <input
            type="number"
            onChange={onChangeHandler}
@@ -45,4 +49,4 @@ import React, { useState } from 'react';
    );
  }
 
- export default Week1Component;
+ export default Question1;
