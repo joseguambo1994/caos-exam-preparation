@@ -13,6 +13,10 @@ const Question14 = () => {
     const [ numberOfSectorsRequiredRounded, setNumberOfSectorsRequiredRounded ] = useState(0);
     const [ averageFileStorageSize, setAverageFileStorageSize ] = useState(0);
     const [ storageWastePerFile, setStorageWastePerFile ] = useState(0);
+    const [ timeToReadAFullRotation, setTimeToReadAFullRotation ] = useState(0);
+    const [ timeToReadASector, setTimeToReadASector ] = useState(0);
+    const [ timeToReadFullyContiguos, setTimeToReadFullyContiguos ] = useState(0);
+    const [ timeToReadFullyFragmented, setTimeToReadFullFragmented ] = useState(0);
 
     useEffect(()=>{
         setNumberOfSectorsRequired( averageFileSize/diskSectorSize);
@@ -29,6 +33,24 @@ const Question14 = () => {
     useEffect(() => {
         setStorageWastePerFile((averageFileStorageSize - averageFileSize)*100/averageFileStorageSize);
     },[ averageFileSize, averageFileStorageSize ]);
+
+    useEffect(() => {
+        const diskRotationalSpeedInSeconds = diskRotationalSpeed/ 60; 
+        const timeToCompleteARotationInMiliseconds = (1/diskRotationalSpeedInSeconds)*1000;
+        setTimeToReadAFullRotation(timeToCompleteARotationInMiliseconds);
+    }, [ diskRotationalSpeed]);
+
+    useEffect(() => {
+        setTimeToReadASector(timeToReadAFullRotation/diskSectorsPerTrack);
+    }, [ timeToReadAFullRotation, diskSectorsPerTrack]);
+
+    useEffect(()=>{
+        setTimeToReadFullyContiguos( diskSeekTime + timeToReadAFullRotation + (18* timeToReadASector) );
+    },[ diskSeekTime, timeToReadAFullRotation, timeToReadASector ])
+
+    useEffect(()=>{
+        setTimeToReadFullFragmented( 18* (diskSeekTime + timeToReadAFullRotation + timeToReadASector) );
+    },[ diskSeekTime, timeToReadAFullRotation, timeToReadASector ])
 
     return (
         <div>
@@ -99,7 +121,11 @@ const Question14 = () => {
             </div>
             <div>
                 <label> Data Rates </label>
-                <label> Answer: Number of sectors required = { numberOfSectorsRequired }  </label>
+                <label> Time to read a complete rotation = { timeToReadAFullRotation } in ms </label>
+                <label> Time to read a sector = { timeToReadASector } [ms] 
+                {timeToReadASector * 1000} [micro seconds] </label>
+                <label> Time to read a fully contiguos = { timeToReadFullyContiguos } in ms </label>
+                <label> Time to read a fully fragmented = { timeToReadFullyFragmented } in ms </label>
             </div>
         </div>
     );
