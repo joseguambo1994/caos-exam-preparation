@@ -9,6 +9,7 @@ import Question11 from './Question11/Question11';
 import Glossary from './Glossary/Glossary';
 import Question14 from './Question14/Question14';
 import Question20 from './Question20/Question20';
+import Question22 from './Question22/Question22';
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
         </div>
         <div>
           <Question20 />
+        </div>
+        <div>
+          <Question22 />
         </div>
         <div>
          <Glossary />
